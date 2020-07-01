@@ -4,61 +4,92 @@ using namespace std;
 
 typedef struct _Node
 {
-	int data;
-	_Node * next;
+  int data;
+  _Node *next;
 } Node;
 
 typedef struct _Head
 {
-	_Node * head;
-	int size;
+  _Node *head;
+  int size;
 } Head;
 
-bool nodeInsert(Head* &head, int data)
+bool nodePush(Head *&head, int data)
 {
-	try
-	{
-		Node *tmp = new Node;
-		tmp->data = data;
-		tmp->next = head->head;
-		head->head = tmp;
-		head->size++;
-		return true;
-	}
-	catch (const exception &e)
-	{
-		return false;
-	}
+  try
+  {
+    Node *tmp = new Node;
+    tmp->data = data;
+    tmp->next = head->head;
+    head->head = tmp;
+    head->size++;
+    return true;
+  }
+  catch (const exception &e)
+  {
+    return false;
+  }
 }
 
-void deleteNode(Head *&head)
+void nodePrint(Head *&head)
 {
-	Node *curr = head->head;
-	while (curr != NULL)
-	{
-		Node *tmp = curr;
-		curr = curr->next;
-		delete tmp;
-	}
-	delete head;
+  Node *tmp = head->head;
+  while (tmp != NULL)
+  {
+    cout << tmp->data << " ";
+    tmp = tmp->next;
+  }
+  cout << "\n";
+}
 
+int nodePop(Head *&head)
+{
+  if (head->size == 0)
+  {
+    return -1;
+  }
+  Node *tmp = head->head;
+  head->head = head->head->next;
+
+  int data = tmp->data;
+  delete tmp;
+
+  return data;
+}
+
+void nodeDestroy(Head *&head)
+{
+  Node *curr = head->head;
+  while (curr != NULL)
+  {
+    Node *tmp = curr;
+    curr = curr->next;
+    delete tmp;
+  }
+  delete head;
 }
 
 int main()
 {
-	Head *head = new Head;
-	head->head = NULL;
-	head->size = 0;
+  Head *head = new Head;
+  head->head = NULL;
+  head->size = 0;
 
-	nodeInsert(head, 10);
-	nodeInsert(head, 20);
-	nodeInsert(head, 30);
+  cout << "pop : " << nodePop(head) << "\n";
 
-	cout << head->head->data << "\n";
-	cout << head->head->next->data << "\n";
-	cout << head->head->next->next->data << "\n";
+  nodePush(head, 10);
+  nodePrint(head);
+  cout << "pop : " << nodePop(head) << "\n";
+  nodePrint(head);
 
-	deleteNode(head);
+  nodePush(head, 20);
+  // nodePrint(head);
+  nodePush(head, 30);
+  nodePrint(head);
+  cout << "pop : " << nodePop(head) << "\n";
+  nodePrint(head);
 
-	return 0;
+  nodeDestroy(head);
+
+  return 0;
 }
