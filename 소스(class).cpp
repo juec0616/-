@@ -67,13 +67,13 @@ public:
 	~LinkedList()
 	{
 		Node *curr = head;
-		while (size)
+		while (curr != nullptr)
 		{
 			Node *tmp = curr;
 			curr = curr->getNext();
-			cout << tmp->getData() << " ";
 			delete tmp;
 		}
+		cout << "Clear\n";
 	}
 
 	void addSize() { this->size++; }
